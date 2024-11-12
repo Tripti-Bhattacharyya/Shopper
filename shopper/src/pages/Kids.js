@@ -1,7 +1,7 @@
 import React from "react";
 
-const Shop = () => {
-  return <div>Shop Page</div>;
+const Kids = () => {
+  return <div>Kids Page</div>;
 };
 
-export default Shop;
+export default Kids;
