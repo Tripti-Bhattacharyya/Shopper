@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
       <img 
         src={`http://localhost:5000/${product.image}`} 
         alt={product.name} 
-        style={{ width: '100%', height: 'auto' }}
+       
       />
       <h3>{product.name}</h3>
       <p>Price: ${product.price}</p>

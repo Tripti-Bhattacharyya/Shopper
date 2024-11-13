@@ -13,7 +13,7 @@ app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Use CORS middleware to allow requests from the frontend
+
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use('/uploads', (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); 

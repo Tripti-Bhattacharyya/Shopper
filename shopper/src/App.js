@@ -1,7 +1,7 @@
 // src/App.js
 import './App.css';
 import Navbar from './components/Navbar';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Men from './pages/Men';
@@ -11,7 +11,7 @@ import Cart from './pages/Cart';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import { AuthProvider, AuthContext } from './context/authContext';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './context/cartContext';
 function App() {
@@ -31,13 +31,9 @@ function App() {
 
 function PrivateRoutes() {
   const { isAuthenticated, role } = useContext(AuthContext);
-  const navigate = useNavigate();
+ 
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
+
 
   if (!isAuthenticated) {
     return <Home />;

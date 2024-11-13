@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState('');
 
-  // Check if user is authenticated on initial load (e.g., from localStorage)
+ 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {

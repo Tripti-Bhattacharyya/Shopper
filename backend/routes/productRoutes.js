@@ -41,7 +41,7 @@ router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, re
   }
 });
 
-// backend/routes/productRoutes.js
+
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
