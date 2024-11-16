@@ -27,7 +27,7 @@ const AdminDashboard = () => {
     formData.append('price', product.price);
     formData.append('category', product.category);
     formData.append('stock', product.stock);
-    formData.append('image', product.image); // Add the image file
+    formData.append('image', product.image);
 
     try {
       await axios.post('http://localhost:5000/api/products/add', formData, {

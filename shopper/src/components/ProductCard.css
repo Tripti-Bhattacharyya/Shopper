@@ -18,9 +18,16 @@
     width: 100%;
     height: auto;
   }
+ 
   
-  .old-price {
-    text-decoration: line-through;
-    color: #888;
+
+  
+  .add-to-cart-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
   }
   

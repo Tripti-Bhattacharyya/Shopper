@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || 'user'  // default role is 'user'
+      role: role || 'user'  
     });
 
     await user.save();
@@ -58,7 +58,8 @@ export const loginUser = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.status(200).json({ message: 'Login successful', token, role: user.role });
+    res.status(200).json({ message: 'Login successful', token, role: user.role,userId: user._id  });
+    console.log("b-user:",user._id);
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: 'Server error' });

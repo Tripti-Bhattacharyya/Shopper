@@ -37,12 +37,14 @@ const Navbar = () => {
             )}
           </ul>
           <div className="nav-login-cart">
+              {role !== 'admin' &&(
             <div className="cart-icon">
               <Link to="/cart" className="cart-link">
                 <img src={cart_icon} alt="Cart" aria-label="Cart" />
                 {cartItems.length > 0 && <span className="cart-count">{cartItems.length}</span>}
               </Link>
             </div>
+          )}
             <button onClick={logout} aria-label="Logout">Logout</button>
           </div>
         </>

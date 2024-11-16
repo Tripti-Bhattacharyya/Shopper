@@ -1,7 +1,6 @@
-// src/App.js
 import './App.css';
 import Navbar from './components/Navbar';
-import { Routes, Route} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Men from './pages/Men';
@@ -14,34 +13,40 @@ import { AuthProvider, AuthContext } from './context/authContext';
 import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './context/cartContext';
+
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  return (
+    <CartProvider>
       <Navbar />
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/*" element={<PrivateRoutes />} />
+       
+        <Route path="/*" element={isAuthenticated ? <PrivateRoutes /> : <Home />} />
       </Routes>
-      </CartProvider>
-    </AuthProvider>
+    </CartProvider>
   );
 }
 
 function PrivateRoutes() {
   const { isAuthenticated, role } = useContext(AuthContext);
- 
-
-
 
   if (!isAuthenticated) {
-    return <Home />;
+    return <Home />; 
   }
 
   return (
     <Routes>
-      
       <Route path="/" element={<Home />} />
       <Route path="/shop" element={<Shop />} />
       <Route path="/men" element={<Men />} />
@@ -54,6 +59,9 @@ function PrivateRoutes() {
 }
 
 export default App;
+
+
+
 
 
 

@@ -26,12 +26,12 @@ router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, re
 
   try {
     const imagePath = path.join('uploads', req.file.filename).replace(/\\/g, '/');
-
-    console.log('Image path saved:', imagePath); // This should log if the file is uploaded successfully
+  //In JavaScript, a regular expression is written like this: /pattern/
+    console.log('Image path saved:', imagePath); 
 
     const product = new Product({
       ...req.body,
-      image: imagePath,  // Save the normalized image path
+      image: imagePath,  
     });
 
     await product.save();

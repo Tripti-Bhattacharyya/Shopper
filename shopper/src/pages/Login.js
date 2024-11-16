@@ -11,10 +11,16 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      
       const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
-      const { token, role } = response.data;
+      const { token, role, userId } = response.data; // Destructure userId
+    
+
+      // Save token and role in AuthContext and userId in localStorage
       login(token, role);
-      navigate('/'); 
+      localStorage.setItem('userId', userId); 
+
+      navigate('/');
     } catch (error) {
       console.error("Login failed:", error);
       alert('Invalid credentials');
@@ -35,6 +41,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
