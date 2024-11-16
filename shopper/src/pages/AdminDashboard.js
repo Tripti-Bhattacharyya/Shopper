@@ -4,7 +4,7 @@ import axios from 'axios';
 const AdminDashboard = () => {
   const [product, setProduct] = useState({
     name: '',
-    description: '',
+    
     price: '',
     image: null,
     category: '',
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
   const handleAddProduct = async () => {
     const formData = new FormData();
     formData.append('name', product.name);
-    formData.append('description', product.description);
+  
     formData.append('price', product.price);
     formData.append('category', product.category);
     formData.append('stock', product.stock);
@@ -47,9 +47,14 @@ const AdminDashboard = () => {
     <div>
       <h2>Admin Dashboard</h2>
       <input name="name" placeholder="Name" onChange={handleChange} />
-      <input name="description" placeholder="Description" onChange={handleChange} />
+    
       <input name="price" type="number" placeholder="Price" onChange={handleChange} />
-      <input name="category" placeholder="Category" onChange={handleChange} />
+      <select name="category" value={product.category} onChange={handleChange}>
+        <option value="">Select Category</option>
+        <option value="m">Men</option>
+        <option value="f">Women</option>
+        <option value="k">Kids</option>
+      </select>
       <input name="stock" type="number" placeholder="Stock" onChange={handleChange} />
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleAddProduct}>Add Product</button>

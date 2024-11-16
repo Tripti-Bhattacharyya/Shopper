@@ -27,7 +27,7 @@ router.post('/add', verifyToken, isAdmin, upload.single('image'), async (req, re
   try {
     const imagePath = path.join('uploads', req.file.filename).replace(/\\/g, '/');
   //In JavaScript, a regular expression is written like this: /pattern/
-    console.log('Image path saved:', imagePath); 
+    //console.log('Image path saved:', imagePath); 
 
     const product = new Product({
       ...req.body,
@@ -51,6 +51,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/category/:category', async (req, res) => {
+  try {
+    const { category } = req.params;
+    const products = await Product.find({ category });
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 export default router;
 

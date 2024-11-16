@@ -9,6 +9,7 @@ import Kids from './pages/Kids';
 import Cart from './pages/Cart';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Checkout from './pages/CheckOut';
 import { AuthProvider, AuthContext } from './context/authContext';
 import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
@@ -53,6 +54,7 @@ function PrivateRoutes() {
       <Route path="/women" element={<Women />} />
       <Route path="/kids" element={<Kids />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout" element={<Checkout />} />
       {role === 'admin' && <Route path="/admin-dashboard" element={<AdminDashboard />} />}
     </Routes>
   );
