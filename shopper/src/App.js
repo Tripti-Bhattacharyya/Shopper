@@ -14,7 +14,7 @@ import { AuthProvider, AuthContext } from './context/authContext';
 import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './context/cartContext';
-
+import Payment from './pages/Payment';
 function App() {
   return (
     <AuthProvider>
@@ -55,6 +55,7 @@ function PrivateRoutes() {
       <Route path="/kids" element={<Kids />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment" element={<Payment />} />
       {role === 'admin' && <Route path="/admin-dashboard" element={<AdminDashboard />} />}
     </Routes>
   );

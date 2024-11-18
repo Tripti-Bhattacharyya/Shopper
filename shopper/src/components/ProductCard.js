@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
         className="product-image"
       />
       <h3>{product.name}</h3>
-      <p>Price: ${product.price}</p>
+      <p>Price: Rs {product.price}</p>
       <button className="add-to-cart-button" onClick={() => addToCart(product)}>
         Add to Cart
       </button>

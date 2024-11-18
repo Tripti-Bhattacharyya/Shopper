@@ -5,21 +5,24 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import path from 'path';
-dotenv.config();
+import paymentRoutes from './routes/paymentRoutes.js';
+import webhookRoutes from './routes/webhookRoutes.js';
 
 import { fileURLToPath } from 'url';
+
+dotenv.config();
 const app = express();
-app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+app.use('/api/webhook', express.raw({ type: 'application/json' }), webhookRoutes);
+// Apply JSON middleware globally (except /api/webhook)
+app.use(express.json());
 
 app.use(cors({ origin: 'http://localhost:3000' }));
-app.use('/uploads', (req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*'); 
-  next();
-}, express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -29,6 +32,11 @@ mongoose.connect(process.env.MONGO_URI, {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/payment', paymentRoutes);
+
+// Apply raw middleware specifically to /api/webhook
+//app.use('/api/webhook', express.raw({ type: 'application/json' }), webhookRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
