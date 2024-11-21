@@ -57,9 +57,21 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-    console.log(token);
 
-    res.status(200).json({ message: 'Login successful', token, role: user.role,userId: user._id  });
+
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      role: user.role,
+      userId: user._id,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+    
     //console.log("b-user:",user._id);
   } catch (error) {
     console.error("Error during login:", error);

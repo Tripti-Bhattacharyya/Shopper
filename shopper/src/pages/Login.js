@@ -13,12 +13,12 @@ const Login = () => {
     try {
       
       const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
-      const { token, role, userId } = response.data; // Destructure userId
+      const { token, role, user } = response.data;
     
 
       // Save token and role in AuthContext and userId in localStorage
       login(token, role);
-      localStorage.setItem('userId', userId); 
+      localStorage.setItem('user', JSON.stringify(user));
 
       navigate('/');
     } catch (error) {
