@@ -52,9 +52,13 @@ export const CartProvider = ({ children }) => {
       return updatedCart;
     });
   };
+  const clearCart = () => {
+    setCartItems([]); // Clear cart state
+    localStorage.removeItem(cartKey); // Remove from localStorage
+  };
   
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart,clearCart }}>
       {children}
     </CartContext.Provider>
   );

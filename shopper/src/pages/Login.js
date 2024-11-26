@@ -19,7 +19,7 @@ const Login = () => {
       // Save token and role in AuthContext and userId in localStorage
       login(token, role);
       localStorage.setItem('user', JSON.stringify(user));
-
+      localStorage.setItem('userId', user.id);
       navigate('/');
     } catch (error) {
       console.error("Login failed:", error);

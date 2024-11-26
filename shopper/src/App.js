@@ -9,12 +9,13 @@ import Kids from './pages/Kids';
 import Cart from './pages/Cart';
 import Register from './pages/Register';
 import Login from './pages/Login';
-//import Checkout from './pages/CheckOut';
+import Orders from './pages/Orders';
 import { AuthProvider, AuthContext } from './context/authContext';
 import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './context/cartContext';
-//import Payment from './pages/Payment';
+import { OrdersProvider } from './context/ordersContext';
+
 
 
 function App() {
@@ -30,6 +31,7 @@ function AppContent() {
 
   return (
     <CartProvider>
+      <OrdersProvider>
       <Navbar />
       <Routes>
         <Route path="/register" element={<Register />} />
@@ -37,6 +39,7 @@ function AppContent() {
        
         <Route path="/*" element={isAuthenticated ? <PrivateRoutes /> : <Home />} />
       </Routes>
+      </OrdersProvider>
     </CartProvider>
   );
 }
@@ -56,7 +59,7 @@ function PrivateRoutes() {
       <Route path="/women" element={<Women />} />
       <Route path="/kids" element={<Kids />} />
       <Route path="/cart" element={<Cart />} />
-      
+      <Route path="/orders" element={<Orders />} />
     
       {role === 'admin' && <Route path="/admin-dashboard" element={<AdminDashboard />} />}
     </Routes>

@@ -12,11 +12,11 @@ const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
-//console.log('Razorpay Instance:', razorpayInstance);
+
 // Create Razorpay order
 router.post('/create-order', async (req, res) => {
     try {
-      const { amount, currency } = req.body; // Ensure `amount` and `currency` are passed
+      const { amount, currency } = req.body; 
       if (!amount || !currency) {
         return res.status(400).json({ message: 'Amount and currency are required.' });
       }
@@ -47,7 +47,7 @@ router.post('/verify-payment', async (req, res) => {
       .digest('hex');
 
     if (generated_signature === razorpay_signature) {
-      // Payment verified, send confirmation email
+      
       const emailSubject = 'Payment Confirmation';
       const emailContent = `
         <h1>Thank you for your payment!</h1>

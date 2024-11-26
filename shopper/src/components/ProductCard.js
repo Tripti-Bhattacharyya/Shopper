@@ -1,15 +1,33 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../context/cartContext';
+import { useOrders } from "../context/ordersContext";
 import './ProductCard.css';
 import { useNavigate } from 'react-router-dom';
+import { handlePayment } from '../pages/Payment';
+
 const ProductCard = ({ product }) => {
   const { addToCart } = useContext(CartContext);
-
   const navigate = useNavigate();
+  const { addOrder } = useOrders();
+  const handleBuyNow = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userEmail = user?.email || '';
 
-  const handleBuyNow = () => {
-    // Redirect to checkout with the selected product
-    navigate('/checkout', { state: { product } });
+    try {
+      const paymentResult = await handlePayment({
+        amount: product.price,
+        productName: product.name,
+        productId: product._id,
+        userEmail,
+        navigate,
+      });
+    
+      if (paymentResult.success) {
+        addOrder([{ id: product._id, name: product.name, price: product.price, image: product.image }]);
+      }
+    } catch (error) {
+      console.error('Payment failed:', error);
+    }
   };
 
   return (
@@ -25,8 +43,8 @@ const ProductCard = ({ product }) => {
         Add to Cart
       </button>
       <button className="buy-now-button" onClick={handleBuyNow}>
-          Buy Now
-        </button>
+        Buy Now
+      </button>
     </div>
   );
 };
