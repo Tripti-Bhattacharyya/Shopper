@@ -15,7 +15,7 @@ import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './context/cartContext';
 import { OrdersProvider } from './context/ordersContext';
-
+import Profile from './pages/profile';
 
 
 function App() {
@@ -36,6 +36,7 @@ function AppContent() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
        
         <Route path="/*" element={isAuthenticated ? <PrivateRoutes /> : <Home />} />
       </Routes>
