@@ -41,6 +41,7 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  const BASE_URL = "http://localhost:5000";
   return (
     <div className="navbar">
       {/* Logo Section */}
@@ -52,22 +53,23 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Menu */}
-      <ul className="nav-menu">
-        {role === 'admin' ? (
-          <li>
-           
-          </li>
-        ) : (
-          <>
-            <li><Link to="/shop">Shop</Link></li>
-            <li><Link to="/men">Men</Link></li>
-            <li><Link to="/women">Women</Link></li>
-            <li><Link to="/kids">Kids</Link></li>
-            <li><Link to="/orders">Orders</Link></li>
-          </>
-        )}
-      </ul>
-
+      {isAuthenticated && (
+        <ul className="nav-menu">
+          {role === 'admin' ? (
+            <li>
+            
+            </li>
+          ) : (
+            <>
+              <li><Link to="/shop">Shop</Link></li>
+              <li><Link to="/men">Men</Link></li>
+              <li><Link to="/women">Women</Link></li>
+              <li><Link to="/kids">Kids</Link></li>
+              <li><Link to="/orders">Orders</Link></li>
+            </>
+          )}
+        </ul>
+      )}
       {/* User/Profile Section */}
       <div className="nav-user">
         {isAuthenticated ? (
@@ -83,11 +85,15 @@ const Navbar = () => {
 
             {/* Profile Circle with Dropdown */}
             <div className="profile-circle" onClick={toggleDropdown}>
-              <img
-                src={user?.profilePicture || defaultAvatar}
-                alt="Profile"
-                className="profile-image"
-              />
+            <img
+              src={
+                user?.profilePicture
+                  ? `${BASE_URL}/${user.profilePicture.replace(/\\/g, '/')}`
+                  : defaultAvatar
+              }
+              alt="Profile"
+              className="profile-image"
+            />
             </div>
             {isDropdownOpen && (
               <div className="dropdown">

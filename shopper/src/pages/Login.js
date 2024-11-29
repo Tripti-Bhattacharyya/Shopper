@@ -19,8 +19,10 @@ const Login = () => {
       // Save token and role in AuthContext and userId in localStorage
       login(token, role);
       localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('userId', user.id);
+      localStorage.setItem('userId', user._id);
+      //console.log("User:",user);
       navigate('/');
+      window.location.reload()
     } catch (error) {
       console.error("Login failed:", error);
       alert('Invalid credentials');

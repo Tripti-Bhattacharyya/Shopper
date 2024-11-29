@@ -1,8 +1,9 @@
 // backend/routes/authRoutes.js
 import express from 'express';
 import { body } from 'express-validator';
-import { registerUser, loginUser, getUserData, getAdminData } from '../controllers/authControllers.js';
+import { registerUser, loginUser, getUserData, getAdminData,updateUserProfile } from '../controllers/authControllers.js';
 import { verifyToken, isAdmin } from '../middleware/authMiddleware.js';
+import upload from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
@@ -32,6 +33,9 @@ router.get('/user-data', verifyToken, getUserData);
 
 // Admin-only route
 router.get('/admin-data', verifyToken, isAdmin, getAdminData);
+
+router.put('/:id', verifyToken, upload.single('profilePicture'), updateUserProfile);
+
 
 export default router;
 

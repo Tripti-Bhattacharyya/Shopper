@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import User from '../models/User.js';
 
+
 export const registerUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -65,10 +66,11 @@ export const loginUser = async (req, res) => {
       role: user.role,
       userId: user._id,
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
+        profilePicture: user.profilePicture || '',
       },
     });
     
@@ -85,4 +87,40 @@ export const getUserData = (req, res) => {
 
 export const getAdminData = (req, res) => {
   res.json({ message: 'Admin data accessed' });
+};
+
+
+export const updateUserProfile = async (req, res) => {
+  try {
+      const userId = req.params.id;
+      const { name } = req.body;
+      const profilePicture = req.file ? req.file.path : undefined;
+
+      if (!userId) {
+          return res.status(400).json({ message: "User ID is required" });
+      }
+
+      const updatedData = { name };
+      if (profilePicture) {
+          updatedData.profilePicture = profilePicture;
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+          userId,
+          { $set: updatedData },
+          { new: true }
+      );
+
+      if (!updatedUser) {
+          return res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(200).json({
+          user: updatedUser,
+          message: "Profile updated successfully",
+      });
+  } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
 };
