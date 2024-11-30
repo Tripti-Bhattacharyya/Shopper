@@ -1,7 +1,7 @@
 // backend/routes/authRoutes.js
 import express from 'express';
 import { body } from 'express-validator';
-import { registerUser, loginUser, getUserData, getAdminData,updateUserProfile } from '../controllers/authControllers.js';
+import { registerUser, loginUser, getUserData, getAdminData,updateUserProfile,sendOtp, verifyOtp, resetPassword } from '../controllers/authControllers.js';
 import { verifyToken, isAdmin } from '../middleware/authMiddleware.js';
 import upload from '../middleware/uploadMiddleware.js';
 
@@ -36,6 +36,8 @@ router.get('/admin-data', verifyToken, isAdmin, getAdminData);
 
 router.put('/:id', verifyToken, upload.single('profilePicture'), updateUserProfile);
 
-
+router.post('/send-otp', sendOtp);
+router.post('/verify-otp', verifyOtp);
+router.post('/reset-password', resetPassword);
 export default router;
 

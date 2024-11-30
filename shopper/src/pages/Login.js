@@ -36,6 +36,10 @@ const Login = () => {
       <h2>Login</h2>
       <input name="email" placeholder="Email" onChange={handleChange} />
       <input name="password" type="password" placeholder="Password" onChange={handleChange} />
+       <p>
+        Forgot your password? <a href="/forgot-password">Click here</a>
+      </p>
+
       <button onClick={handleLogin}>Login</button>
       <p>New user? <a href="/register">Register here</a></p>
     </div>

@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Orders from './pages/Orders';
+import ForgotPassword from './pages/ForgotPassword';
 import { AuthProvider, AuthContext } from './context/authContext';
 import { useContext } from 'react';
 import AdminDashboard from './pages/AdminDashboard';
@@ -20,6 +21,7 @@ import Profile from './pages/profile';
 
 function App() {
   return (
+       
     <AuthProvider>
       <AppContent />
     </AuthProvider>
@@ -34,10 +36,11 @@ function AppContent() {
       <OrdersProvider>
       <Navbar />
       <Routes>
+        <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-       
+     
         <Route path="/*" element={isAuthenticated ? <PrivateRoutes /> : <Home />} />
       </Routes>
       </OrdersProvider>
