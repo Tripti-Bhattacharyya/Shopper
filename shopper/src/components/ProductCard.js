@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
       />
       <h3>{product.name}</h3>
       <p>Price: Rs {product.price}</p>
-      <button className="add-to-cart-button" onClick={() => addToCart(product)}>
+      <button className="add-to-cart-button" onClick={() => addToCart(product,true)}>
         Add to Cart
       </button>
       <button className="buy-now-button" onClick={handleBuyNow}>

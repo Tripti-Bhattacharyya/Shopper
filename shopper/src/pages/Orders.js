@@ -1,4 +1,3 @@
-// src/components/Orders.js
 import React from 'react';
 import { useOrders } from '../context/ordersContext';
 import './Orders.css';
@@ -18,7 +17,7 @@ const Orders = () => {
       </button>
       <ul className="orders-list">
         {orders.map((item, index) => (
-          <li key={`${item.id}-${index}`} className="order-item">
+          <li key={`${item._id}-${index}`} className="order-item">
             <img
               src={`http://localhost:5000/${item.image}`}
               alt={item.name}
@@ -27,6 +26,7 @@ const Orders = () => {
             <div className="order-item-details">
               <h4>{item.name}</h4>
               <p>Price: Rs {item.price}</p>
+              <p>Quantity: {item.quantity}</p> {/* Display quantity */}
               <p>Status: Pending Delivery</p>
             </div>
           </li>
@@ -37,3 +37,4 @@ const Orders = () => {
 };
 
 export default Orders;
+

@@ -26,23 +26,55 @@ export const CartProvider = ({ children }) => {
   }, [cartItems, userId, cartKey]);
 
   // Function to add items to the cart
-  const addToCart = (item) => {
-    setCartItems((prevItems) => {
-      // Check if the item is already in the cart
-      const existingItem = prevItems.find((cartItem) => cartItem._id === item._id);
-  
-      if (existingItem) {
-        // Notify the user that the item is already in the cart
-        alert(`${item.name} is already in the cart.`);
-        return prevItems; // Return the previous cart items unchanged
+ // Function to add items to the cart or increase quantity
+const addToCart = (item,fromShopPage = false) => {
+  setCartItems((prevItems) => {
+    // Check if the item is already in the cart
+    const existingItemIndex = prevItems.findIndex(
+      (cartItem) => cartItem._id === item._id
+    );
+    
+
+    const existingItem = prevItems.find((cartItem) => cartItem._id === item._id);
+    if (existingItem && (fromShopPage===false)) {
+      // Increase the quantity of the existing item
+      return prevItems.map((cartItem) =>
+        cartItem._id === item._id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      );
+    }
+    if (existingItemIndex !== -1) {
+      if (fromShopPage) {
+        alert("This item is already in your cart! To increase the quantity, go to your cart.");
       }
+      
+      return prevItems; // Return cart without changes
+    }
+    
+
+    
+
+    // If the item is not in the cart, add it with a quantity of 1
+    return [...prevItems, { ...item, quantity: 1 }];
+  });
+};
+
+// Function to decrease the quantity of an item
+const decreaseQuantity = (itemId) => {
+  setCartItems((prevItems) =>
+    prevItems
+      .map((item) =>
+        item._id === itemId && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+      .filter((item) => item.quantity > 0) // Remove items with quantity 0
+  );
+};
+
   
-      // If the item is not in the cart, add it
-      return [...prevItems, item];
-    });
-  };
-  
-//console.log(cartItems);
+
   // Function to remove items from the cart
   const removeFromCart = (itemId) => {
     console.log("Removing Item ID:", itemId); // Debugging log
@@ -58,8 +90,11 @@ export const CartProvider = ({ children }) => {
   };
   
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart,clearCart }}>
-      {children}
-    </CartContext.Provider>
+ <CartContext.Provider
+    value={{ cartItems, addToCart, removeFromCart, clearCart, decreaseQuantity }}
+>
+   {children}
+</CartContext.Provider>
+ 
   );
 };
