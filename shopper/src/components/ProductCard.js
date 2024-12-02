@@ -31,7 +31,7 @@ const ProductCard = ({ product }) => {
         });
        
         // Add order locally
-        addOrder([{ id: product._id, name: product.name, price: product.price, image: product.image }]);
+        addOrder([{ id: product._id, name: product.name, price: product.price, image: product.image ,quantity: 1}]);
       }
     } catch (error) {
       console.error('Payment failed:', error);

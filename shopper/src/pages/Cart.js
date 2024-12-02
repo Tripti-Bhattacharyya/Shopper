@@ -4,7 +4,7 @@ import { useOrders } from "../context/ordersContext";
 import './Cart.css';
 import { useNavigate } from "react-router-dom";
 import { handlePayment } from '../pages/Payment';
-
+import axios from 'axios';
 const Cart = () => {
   const { cartItems, removeFromCart, addToCart, decreaseQuantity, clearCart } = useContext(CartContext);
   const { addOrder } = useOrders();
@@ -16,24 +16,51 @@ const Cart = () => {
   );
 
   const handlePaymentForCart = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userEmail = user?.email || '';
-
-    const paymentResult = await handlePayment({
-      amount: totalBill,
-      productName: 'Cart Items',
-      userEmail,
-      navigate,
-    });
-   
-    if (paymentResult?.success) {
-
-      addOrder(cartItems);
-      clearCart();
-    } else {
-      alert('Payment was not successful. No changes to orders or cart.');
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userEmail = user?.email || "";
+  
+    try {
+      const paymentResult = await handlePayment({
+        amount: totalBill,
+        productName: "Cart Items",
+        userEmail,
+        navigate,
+      });
+  
+      if (paymentResult?.success) {
+        const failedItems = [];
+  
+        for (const item of cartItems) {
+          try {
+            const response = await axios.post("http://localhost:5000/api/products/purchase", {
+              productId: item._id,
+              quantity: item.quantity,
+            });
+  
+            if (response.status !== 200) {
+              failedItems.push(item.name);
+            }
+          } catch {
+            failedItems.push(item.name);
+          }
+        }
+  
+        if (failedItems.length > 0) {
+          alert(`Stock update failed for: ${failedItems.join(", ")}`);
+          return;
+        }
+  
+        addOrder(cartItems);
+        clearCart();
+      } else {
+        alert("Payment was not successful. No changes to orders or cart.");
+      }
+    } catch (error) {
+      console.error("Error during payment and stock update:", error);
+      alert("An error occurred. Please try again.");
     }
   };
+  
 
   if (cartItems.length === 0) {
     return <div>Your Cart is Empty!!!!</div>;
@@ -62,12 +89,20 @@ const Cart = () => {
                   >
                     -
                   </button>
-                  <button
-                    className="increase-button"
-                    onClick={() => addToCart(item)}
-                  >
-                    +
-                  </button>
+              <button
+                  className="increase-button"
+                  onClick={() => {
+                    const product = cartItems.find((cartItem) => cartItem._id === item._id);
+                    if (product.quantity + 1 > product.stock) {
+                      alert('Cannot exceed available stock!');
+                    } else {
+                      addToCart(item);
+                    }
+                  }}
+                >
+                  +
+            </button>
+
                 </div>
                 <button
                   className="remove-button"
