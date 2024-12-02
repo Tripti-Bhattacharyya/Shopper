@@ -61,6 +61,30 @@ router.get('/category/:category', async (req, res) => {
   }
 });
 
+router.post('/purchase', async (req, res) => {
+  const { productId, quantity } = req.body;
+
+  try {
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    if (product.stock < quantity) {
+      return res.status(400).json({ message: 'Insufficient stock' });
+    }
+
+    product.stock -= quantity; // Decrease stock
+    await product.save();
+
+    res.status(200).json({ message: 'Purchase successful', product });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update stock', error: error.message });
+  }
+});
+
+
 export default router;
 
 

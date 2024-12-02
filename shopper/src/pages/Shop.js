@@ -5,18 +5,19 @@ import ProductCard from '../components/ProductCard';
 const Shop = () => {
   const [products, setProducts] = useState([]);
 
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/products');
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+  
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/products');
-        console.log(response.data);
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
     fetchProducts();
   }, []);
+  
 
   return (
     <div className="product-listing">

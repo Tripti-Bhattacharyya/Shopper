@@ -4,11 +4,12 @@ import { useOrders } from "../context/ordersContext";
 import './ProductCard.css';
 import { useNavigate } from 'react-router-dom';
 import { handlePayment } from '../pages/Payment';
-
+import axios from 'axios';
 const ProductCard = ({ product }) => {
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
   const { addOrder } = useOrders();
+
   const handleBuyNow = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const userEmail = user?.email || '';
@@ -21,8 +22,15 @@ const ProductCard = ({ product }) => {
         userEmail,
         navigate,
       });
-    
+
       if (paymentResult.success) {
+        // Update stock on the server
+        await axios.post('http://localhost:5000/api/products/purchase', {
+          productId: product._id,
+          quantity: 1, // Purchase 1 unit
+        });
+       
+        // Add order locally
         addOrder([{ id: product._id, name: product.name, price: product.price, image: product.image }]);
       }
     } catch (error) {
@@ -39,10 +47,19 @@ const ProductCard = ({ product }) => {
       />
       <h3>{product.name}</h3>
       <p>Price: Rs {product.price}</p>
-      <button className="add-to-cart-button" onClick={() => addToCart(product,true)}>
+      <p>Stock: {product.stock > 0 ? product.stock : 'Out of stock'}</p>
+      <button
+        className="add-to-cart-button"
+        onClick={() => addToCart(product, true)}
+        disabled={product.stock === 0}
+      >
         Add to Cart
       </button>
-      <button className="buy-now-button" onClick={handleBuyNow}>
+      <button
+        className="buy-now-button"
+        onClick={handleBuyNow}
+        disabled={product.stock === 0}
+      >
         Buy Now
       </button>
     </div>
@@ -50,4 +67,5 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
+
 
