@@ -5,6 +5,7 @@ import cors from 'cors';
 import paymentRoutes from './routes/paymentRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 import path from 'path';
 
 
@@ -37,7 +38,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/payment', paymentRoutes);
 
 app.use('/api/users', authRoutes);
-
+app.use('/api/orders',orderRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

@@ -1,9 +1,15 @@
-import React from 'react';
-import { useOrders } from '../context/ordersContext';
+import React, { useEffect } from 'react';
 import './Orders.css';
+import { useOrders } from '../context/ordersContext';
 
 const Orders = () => {
-  const { orders, clearOrders } = useOrders();
+  const { orders, fetchOrders, clearOrders } = useOrders();
+
+  useEffect(() => {
+    fetchOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
 
   if (orders.length === 0) {
     return <div>No orders yet!</div>;
@@ -16,25 +22,31 @@ const Orders = () => {
         Remove All Orders
       </button>
       <ul className="orders-list">
-        {orders.map((item, index) => (
-          <li key={`${item._id}-${index}`} className="order-item">
-            <img
-              src={`http://localhost:5000/${item.image}`}
-              alt={item.name}
-              className="order-item-image"
-            />
-            <div className="order-item-details">
-              <h4>{item.name}</h4>
-              <p>Price: Rs {item.price}</p>
-              <p>Quantity: {item.quantity}</p> {/* Display quantity */}
-              <p>Status: Pending Delivery</p>
-            </div>
-          </li>
-        ))}
+        {orders.map((item, index) => {
+          const product = item.product; 
+          return (
+            <li key={`${item._id}-${index}`} className="order-item">
+              <p>{product.name}</p>
+              <img
+                src={`http://localhost:5000/${product.image}`}
+                alt={product.name || 'Order Image'}
+                className="order-item-image"
+              />
+              <div className="order-item-details">
+                <h4>{product.name}</h4>
+                <p>Price: Rs {product.price}</p>
+                <p>Quantity: {item.quantity}</p>
+                <p>Status: {item.status || 'Pending Delivery'}</p>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 };
 
 export default Orders;
+
+
 

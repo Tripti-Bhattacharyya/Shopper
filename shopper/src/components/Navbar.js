@@ -57,7 +57,7 @@ const Navbar = () => {
         <ul className="nav-menu">
           {role === 'admin' ? (
             <li>
-            
+               <Link to="/admin/orders">Manage Orders</Link>
             </li>
           ) : (
             <>

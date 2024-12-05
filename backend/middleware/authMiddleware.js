@@ -17,10 +17,16 @@ export const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'Unauthorized: Invalid token' });
   }
 };
-
-export const isAdmin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
-    return next();
+export const isAdmin = async (req, res, next) => {
+  try {
+    const user = req.user; 
+    
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ message: 'Admins only' });
+    }
+    
+    next(); // User is an admin, proceed.
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
-  return res.status(403).json({ message: 'Forbidden: Admins only' });
 };

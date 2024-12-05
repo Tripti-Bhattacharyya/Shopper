@@ -7,6 +7,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { sendMail } from '../utils/mailer.js'; 
+
 export const registerUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

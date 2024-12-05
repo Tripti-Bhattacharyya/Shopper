@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   const handleBuyNow = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const userEmail = user?.email || '';
-
+  
     try {
       const paymentResult = await handlePayment({
         amount: product.price,
@@ -22,21 +22,30 @@ const ProductCard = ({ product }) => {
         userEmail,
         navigate,
       });
-
+  
       if (paymentResult.success) {
         // Update stock on the server
         await axios.post('http://localhost:5000/api/products/purchase', {
           productId: product._id,
           quantity: 1, // Purchase 1 unit
         });
-       
+  
         // Add order locally
-        addOrder([{ id: product._id, name: product.name, price: product.price, image: product.image ,quantity: 1}]);
+        const order = {
+          product: product._id, // Use product._id
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1,
+        };
+  
+        await addOrder(order); // Pass the correct structure
       }
     } catch (error) {
       console.error('Payment failed:', error);
     }
   };
+  
 
   return (
     <div className="product-card">

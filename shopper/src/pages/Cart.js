@@ -1,28 +1,29 @@
-import React, { useContext } from "react";
-import { CartContext } from "../context/cartContext";
-import { useOrders } from "../context/ordersContext";
+import React, { useContext } from 'react';
+import { CartContext } from '../context/cartContext';
+import { useOrders } from '../context/ordersContext';
 import './Cart.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { handlePayment } from '../pages/Payment';
 import axios from 'axios';
+
 const Cart = () => {
   const { cartItems, removeFromCart, addToCart, decreaseQuantity, clearCart } = useContext(CartContext);
   const { addOrder } = useOrders();
   const navigate = useNavigate();
+  //const userId = localStorage.getItem('userId');
 
   const totalBill = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
-
   const handlePaymentForCart = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userEmail = user?.email || "";
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userEmail = user?.email || '';
   
     try {
       const paymentResult = await handlePayment({
         amount: totalBill,
-        productName: "Cart Items",
+        productName: 'Cart Items',
         userEmail,
         navigate,
       });
@@ -32,7 +33,7 @@ const Cart = () => {
   
         for (const item of cartItems) {
           try {
-            const response = await axios.post("http://localhost:5000/api/products/purchase", {
+            const response = await axios.post('http://localhost:5000/api/products/purchase', {
               productId: item._id,
               quantity: item.quantity,
             });
@@ -46,18 +47,27 @@ const Cart = () => {
         }
   
         if (failedItems.length > 0) {
-          alert(`Stock update failed for: ${failedItems.join(", ")}`);
+          alert(`Stock update failed for: ${failedItems.join(', ')}`);
           return;
         }
   
-        addOrder(cartItems);
+        // Save all cart items as orders
+        const orders = cartItems.map((item) => ({
+          product: item._id,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          quantity: item.quantity,
+        }));
+  
+        await addOrder(orders); // Save all orders
         clearCart();
       } else {
-        alert("Payment was not successful. No changes to orders or cart.");
+        alert('Payment was not successful. No changes to orders or cart.');
       }
     } catch (error) {
-      console.error("Error during payment and stock update:", error);
-      alert("An error occurred. Please try again.");
+      console.error('Error during payment and stock update:', error);
+      alert('An error occurred. Please try again.');
     }
   };
   
@@ -89,20 +99,19 @@ const Cart = () => {
                   >
                     -
                   </button>
-              <button
-                  className="increase-button"
-                  onClick={() => {
-                    const product = cartItems.find((cartItem) => cartItem._id === item._id);
-                    if (product.quantity + 1 > product.stock) {
-                      alert('Cannot exceed available stock!');
-                    } else {
-                      addToCart(item);
-                    }
-                  }}
-                >
-                  +
-            </button>
-
+                  <button
+                    className="increase-button"
+                    onClick={() => {
+                      const product = cartItems.find((cartItem) => cartItem._id === item._id);
+                      if (product.quantity + 1 > product.stock) {
+                        alert('Cannot exceed available stock!');
+                      } else {
+                        addToCart(item);
+                      }
+                    }}
+                  >
+                    +
+                  </button>
                 </div>
                 <button
                   className="remove-button"

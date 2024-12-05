@@ -17,7 +17,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './context/cartContext';
 import { OrdersProvider } from './context/ordersContext';
 import Profile from './pages/profile';
-
+import AdminOrders from './pages/AdminOrders';
 
 function App() {
   return (
@@ -66,6 +66,7 @@ function PrivateRoutes() {
       <Route path="/orders" element={<Orders />} />
     
       {role === 'admin' && <Route path="/admin-dashboard" element={<AdminDashboard />} />}
+      {role === 'admin' &&  <Route path="/admin/orders" element={<AdminOrders />} />}
     </Routes>
   );
 }

@@ -84,6 +84,49 @@ router.post('/purchase', async (req, res) => {
   }
 });
 
+router.put("/update/:id", upload.single("image"), async (req, res) => {
+  const { id } = req.params;
+  const { name, description, price, category, stock } = req.body;
+  const image = req.file?.path;
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        name,
+        description,
+        price,
+        category,
+        stock,
+        ...(image && { image }),
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update product", error });
+  }
+});
+
+
+
+
+// Delete Product (Admin only)
+router.delete('/:id', verifyToken, isAdmin, async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete product', error: error.message });
+  }
+});
+
+
+
 
 export default router;
 
