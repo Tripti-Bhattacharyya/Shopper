@@ -1,116 +1,156 @@
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #db8f8f;
-    position: sticky;
-    top: 0;
-   
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-logo img {
-    height: 45px;
-    margin-right: 0.5rem;
-  }
-  
-  .nav-menu {
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .nav-menu li {
-    list-style: none;
-  }
-  
-  .nav-menu li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-  
-  .nav-menu li a:hover {
-    color: #007BFF;
-  }
-  
 
-  
-  .nav-user {
-    display: flex;
-    align-items: center;
-    position: relative;
-    
-  }
-  .user-menu{
-    display: flex;
-    gap: 1.2rem;
-  }
-  
-  .profile-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid #ccc;
-    margin-left: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .cart-icon {
-    position: relative;
-    margin-right: 15px;
-  }
-  
-  .cart-count {
-    position: absolute;
-    top: -5px;
-    right: -10px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 12px;
-  }
-  
-  .dropdown {
-    position: absolute;
-    top: 71px;
-    right: 14px;
-    background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    width: 150px;
-    z-index: 10;
-  }
-  
-  .dropdown ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .dropdown li {
-    padding: 10px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .dropdown li:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .dropdown li:last-child {
-    border-bottom: none;
-  }
-  
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #9431e6;
+  padding: 10px 20px;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Section */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo img {
+  height: 50px;
+  cursor: pointer;
+}
+
+.nav-logo p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-menu li {
+  font-size: 1rem;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.nav-menu li a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Cart Icon */
+.cart-icon {
+  position: relative;
+}
+
+.cart-icon img {
+  width: 30px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f00;
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+
+/* Profile Section */
+
+.user-menu{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-circle {
+  width: 45px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background: #fff;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  text-align: left;
+  z-index: 1000;
+}
+
+.dropdown ul {
+  list-style: none;
+  padding: 10px 0;
+}
+
+.dropdown li {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdown li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown li:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Login Button */
+.nav-login-button button {
+  padding: 8px 15px;
+  border: none;
+  background: #fff;
+  color: #ff758c;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nav-login-button button:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+

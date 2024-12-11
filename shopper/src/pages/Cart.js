@@ -21,6 +21,27 @@ const Cart = () => {
     const userEmail = user?.email || '';
   
     try {
+      // Step 1: Validate stock on the server
+      const stockValidationResponse = await axios.post('http://localhost:5000/api/products/validateStock', {
+        cartItems: cartItems.map((item) => ({
+          productId: item._id,
+          quantity: item.quantity,
+        })),
+      });
+  
+      const { isStockAvailable, failedItems } = stockValidationResponse.data;
+  
+      // Step 2: Handle insufficient stock scenario
+      if (!isStockAvailable) {
+        alert(
+          `The following items have insufficient stock:\n${failedItems
+            .map((item) => `${item.name} (Available: ${item.availableStock}, Requested: ${item.requestedQuantity})`)
+            .join('\n')}`
+        );
+        return; // Stop further execution if stock is insufficient
+      }
+  
+      // Step 3: Proceed with payment if stock is valid
       const paymentResult = await handlePayment({
         amount: totalBill,
         productName: 'Cart Items',
@@ -29,7 +50,7 @@ const Cart = () => {
       });
   
       if (paymentResult?.success) {
-        const failedItems = [];
+        const failedItemsDuringPurchase = [];
   
         for (const item of cartItems) {
           try {
@@ -39,15 +60,15 @@ const Cart = () => {
             });
   
             if (response.status !== 200) {
-              failedItems.push(item.name);
+              failedItemsDuringPurchase.push(item.name);
             }
           } catch {
-            failedItems.push(item.name);
+            failedItemsDuringPurchase.push(item.name);
           }
         }
   
-        if (failedItems.length > 0) {
-          alert(`Stock update failed for: ${failedItems.join(', ')}`);
+        if (failedItemsDuringPurchase.length > 0) {
+          alert(`Stock update failed for: ${failedItemsDuringPurchase.join(', ')}`);
           return;
         }
   
@@ -66,10 +87,11 @@ const Cart = () => {
         alert('Payment was not successful. No changes to orders or cart.');
       }
     } catch (error) {
-      console.error('Error during payment and stock update:', error);
+      console.error('Error during payment and stock validation:', error);
       alert('An error occurred. Please try again.');
     }
   };
+  
   
 
   if (cartItems.length === 0) {

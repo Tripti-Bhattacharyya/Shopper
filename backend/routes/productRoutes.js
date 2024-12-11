@@ -126,7 +126,33 @@ router.delete('/:id', verifyToken, isAdmin, async (req, res) => {
 });
 
 
+router.post('/validateStock', async (req, res) => {
+  try {
+    const { cartItems } = req.body;
+    const failedItems = [];
 
+    for (const item of cartItems) {
+      const product = await Product.findById(item.productId);
+
+      if (!product || product.stock < item.quantity) {
+        failedItems.push({
+          name: product?.name || 'Unknown',
+          availableStock: product?.stock || 0,
+          requestedQuantity: item.quantity,
+        });
+      }
+    }
+
+    if (failedItems.length > 0) {
+      return res.status(200).json({ isStockAvailable: false, failedItems });
+    }
+
+    res.status(200).json({ isStockAvailable: true, failedItems: [] });
+  } catch (error) {
+    console.error('Error validating stock:', error);
+    res.status(500).json({ error: 'Server error during stock validation' });
+  }
+});
 
 export default router;
 

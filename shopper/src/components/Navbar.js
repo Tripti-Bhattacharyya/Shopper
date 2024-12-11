@@ -108,7 +108,7 @@ const Navbar = () => {
             )}
           </div>
         ) : (
-          <div className="login-button">
+          <div className="nav-login-button">
             <Link to="/login">
               <button aria-label="Login">Login</button>
             </Link>
